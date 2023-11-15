@@ -39,17 +39,29 @@ function init() {
    allCells = document.querySelectorAll("table#wordSearchTable td");
 
    document.querySelector("#showSolution").addEventListener("click", showSolution);
+   document.querySelector("#wordSearchTable").addEventListener("mousedown",clicked);
 }
 
 function showSolution() {
    for (let i = 0; i < document.querySelectorAll(".wordCell").length; i++) {
       document.querySelectorAll(".wordCell")[i].style.backgroundColor = "lavender";
    }
+
    for (let j = 0; j < document.querySelectorAll("#wordSearchList").length; j++) {
       document.querySelectorAll("#wordSearchList")[j].style.textDecoration = "line-through";
       document.querySelectorAll("#wordSearchList")[j].style.color = "lightgray";
    }
+
    alert("Word Search Complete!");
+}
+function clicked() {
+   for (let i = 0; i < document.querySelectorAll("#wordSearchList td").length; i++) {
+      document.querySelectorAll("#wordSearchList td")[i].style.userSelect = "false";
+   }
+
+   document.querySelector("#wordSearchTable").addEventListener("mouseenter", function () {
+      document.querySelector("#wordSearchTable td").style.backgroundColor = "blue";
+   })
 }
 
 /*============================================================*/
