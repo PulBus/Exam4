@@ -27,9 +27,11 @@
 */
 
 var allCells;
+var inputed;
 var found = false;
 
 window.onload = init;
+window.onmouseup = unClicked;
 
 function init() {
    document.querySelectorAll("aside h1")[0].innerHTML = wordSearchTitle;
@@ -37,9 +39,14 @@ function init() {
    document.getElementById("wordList").innerHTML = showList(wordArray);
 
    allCells = document.querySelectorAll("table#wordSearchTable td");
+   inputed = document.querySelector("#pickedLetters");
 
    document.querySelector("#showSolution").addEventListener("click", showSolution);
-   document.querySelector("#wordSearchTable").addEventListener("mousedown",clicked);
+
+   for (let i = 0; i < allCells.length; i++) {
+      allCells[i].addEventListener("mousedown",clicked);
+   }
+   
 }
 
 function showSolution() {
@@ -54,14 +61,41 @@ function showSolution() {
 
    alert("Word Search Complete!");
 }
-function clicked() {
-   for (let i = 0; i < document.querySelectorAll("#wordSearchList td").length; i++) {
-      document.querySelectorAll("#wordSearchList td")[i].style.userSelect = "false";
+function clicked(e) {
+   /*textContent*/
+   e.preventDefault();
+   e.target.style.backgroundColor = "blue";
+   inputed.value = e.target.textContent;
+   for (let i = 0; i < allCells.length; i++) {
+      allCells[i].addEventListener("mouseenter",dragged);
    }
-
-   document.querySelector("#wordSearchTable").addEventListener("mouseenter", function () {
-      document.querySelector("#wordSearchTable td").style.backgroundColor = "blue";
-   })
+}
+function dragged(e) {
+   if (e.target.style.backgroundColor == "green") {
+      inputed.value += e.target.textContent;
+   }
+   else {
+      e.target.style.backgroundColor = "blue";
+      inputed.value += e.target.textContent;
+   }
+}
+function unClicked() {
+   for (let j = 0; j < wordArray.length; j++) {
+      if (inputed.value == wordArray[j]) {
+         for (let k = 0; k < allCells.length; k++) {
+            if (allCells[k].style.backgroundColor == "blue") {
+               allCells[k].style.backgroundColor = "green";
+            }
+         }
+      }
+   }
+   for (let i = 0; i < allCells.length; i++) {
+      allCells[i].removeEventListener("mouseenter",dragged);
+      if (allCells[i].style.backgroundColor == "blue") {
+         allCells[i].style.backgroundColor = "white";
+      }
+   }
+   inputed.value = ""
 }
 
 /*============================================================*/
