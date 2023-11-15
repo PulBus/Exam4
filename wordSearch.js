@@ -28,6 +28,7 @@
 
 var allCells;
 var inputed;
+var done;
 var found = false;
 
 window.onload = init;
@@ -40,13 +41,13 @@ function init() {
 
    allCells = document.querySelectorAll("table#wordSearchTable td");
    inputed = document.querySelector("#pickedLetters");
+   done = document.querySelectorAll("#wordSearchList");
 
    document.querySelector("#showSolution").addEventListener("click", showSolution);
 
    for (let i = 0; i < allCells.length; i++) {
       allCells[i].addEventListener("mousedown",clicked);
    }
-   
 }
 
 function showSolution() {
@@ -54,9 +55,9 @@ function showSolution() {
       document.querySelectorAll(".wordCell")[i].style.backgroundColor = "lavender";
    }
 
-   for (let j = 0; j < document.querySelectorAll("#wordSearchList").length; j++) {
-      document.querySelectorAll("#wordSearchList")[j].style.textDecoration = "line-through";
-      document.querySelectorAll("#wordSearchList")[j].style.color = "lightgray";
+   for (let j = 0; j < done.length; j++) {
+      done[j].style.textDecoration = "line-through";
+      done[j].style.color = "lightgray";
    }
 
    alert("Word Search Complete!");
@@ -71,15 +72,18 @@ function clicked(e) {
    }
 }
 function dragged(e) {
-   if (e.target.style.backgroundColor == "green") {
-      inputed.value += e.target.textContent;
-   }
-   else {
+   if (e.target.style.backgroundColor != "green") {
       e.target.style.backgroundColor = "blue";
-      inputed.value += e.target.textContent;
    }
+   inputed.value += e.target.textContent;
 }
 function unClicked() {
+   for (let l = 0; l < done.length; l++) {
+      if (inputed.value == done[l]) {
+         done[l].style.textDecoration = "line-through"
+         done[l].style.color = "lightgray";
+      }
+   }
    for (let j = 0; j < wordArray.length; j++) {
       if (inputed.value == wordArray[j]) {
          for (let k = 0; k < allCells.length; k++) {
