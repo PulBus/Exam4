@@ -41,7 +41,7 @@ function init() {
 
    allCells = document.querySelectorAll("table#wordSearchTable td");
    inputed = document.querySelector("#pickedLetters");
-   done = document.querySelectorAll("#wordSearchList");
+   done = document.querySelectorAll("#wordSearchList li");
 
    document.querySelector("#showSolution").addEventListener("click", showSolution);
 
@@ -52,7 +52,9 @@ function init() {
 
 function showSolution() {
    for (let i = 0; i < document.querySelectorAll(".wordCell").length; i++) {
-      document.querySelectorAll(".wordCell")[i].style.backgroundColor = "lavender";
+      if (document.querySelectorAll(".wordCell")[i].style.backgroundColor != "green") {
+         document.querySelectorAll(".wordCell")[i].style.backgroundColor = "lavender"; 
+      }
    }
 
    for (let j = 0; j < done.length; j++) {
@@ -63,10 +65,10 @@ function showSolution() {
    alert("Word Search Complete!");
 }
 function clicked(e) {
-   /*textContent*/
    e.preventDefault();
    e.target.style.backgroundColor = "blue";
    inputed.value = e.target.textContent;
+
    for (let i = 0; i < allCells.length; i++) {
       allCells[i].addEventListener("mouseenter",dragged);
    }
@@ -75,15 +77,17 @@ function dragged(e) {
    if (e.target.style.backgroundColor != "green") {
       e.target.style.backgroundColor = "blue";
    }
+
    inputed.value += e.target.textContent;
 }
 function unClicked() {
    for (let l = 0; l < done.length; l++) {
-      if (inputed.value == done[l]) {
+      if (inputed.value == done[l].textContent) {
          done[l].style.textDecoration = "line-through"
          done[l].style.color = "lightgray";
       }
    }
+
    for (let j = 0; j < wordArray.length; j++) {
       if (inputed.value == wordArray[j]) {
          for (let k = 0; k < allCells.length; k++) {
@@ -93,12 +97,14 @@ function unClicked() {
          }
       }
    }
+
    for (let i = 0; i < allCells.length; i++) {
       allCells[i].removeEventListener("mouseenter",dragged);
       if (allCells[i].style.backgroundColor == "blue") {
          allCells[i].style.backgroundColor = "white";
       }
    }
+   
    inputed.value = ""
 }
 
